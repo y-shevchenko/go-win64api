@@ -1,5 +1,4 @@
-module github.com/iamacarpet/go-win64api
-
+module github.com/y-shevchenko/go-win64api
 go 1.13
 
 require (
