@@ -1,0 +1,38 @@
+# github.com/go-ole/go-ole v1.3.0
+## explicit; go 1.12
+github.com/go-ole/go-ole
+github.com/go-ole/go-ole/oleutil
+# github.com/google/cabbie v1.0.5
+## explicit; go 1.18
+github.com/google/cabbie/cablib
+github.com/google/cabbie/errors
+github.com/google/cabbie/notification
+github.com/google/cabbie/search
+github.com/google/cabbie/servicemgr
+github.com/google/cabbie/session
+github.com/google/cabbie/updatecollection
+github.com/google/cabbie/updatehistory
+github.com/google/cabbie/updates
+github.com/google/cabbie/wsus
+# github.com/google/glazier v0.0.0-20240405210254-e2cb03c942b4
+## explicit; go 1.18
+github.com/google/glazier/go/power
+# github.com/iamacarpet/go-win64api v0.0.0-20240331131452-de51f88d7e30
+## explicit; go 1.13
+github.com/iamacarpet/go-win64api/shared
+# github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
+## explicit
+github.com/nu7hatch/gouuid
+# github.com/scjalliance/comshim v0.0.0-20231116235529-bbacf79a4691
+## explicit; go 1.21
+github.com/scjalliance/comshim
+# golang.org/x/sys v0.19.0
+## explicit; go 1.18
+golang.org/x/sys/windows
+golang.org/x/sys/windows/registry
+golang.org/x/sys/windows/svc
+golang.org/x/sys/windows/svc/eventlog
+golang.org/x/sys/windows/svc/mgr
+# gopkg.in/toast.v1 v1.0.0-20180812000517-0a84660828b2
+## explicit
+gopkg.in/toast.v1

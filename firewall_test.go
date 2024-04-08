@@ -1,3 +1,6 @@
+//go:build windows
+// +build windows
+
 package winapi
 
 // WARNING!!! This test have to be run in elevated shell.
@@ -49,7 +52,7 @@ func TestCreatingRule(t *testing.T) {
 	rule.LocalAddresses = "*"
 	rule.InterfaceTypes = "All"
 	rule.ApplicationName = ""
-	ok, err := FirewallRuleAdd(rule.Name, rule.Description, rule.Grouping, rule.LocalPorts, rule.Protocol, rule.Profiles)
+	ok, err := FirewallRuleAdd(rule.Name, rule.Description, rule.Grouping, rule.LocalPorts, "", rule.Protocol, 2, rule.Profiles)
 	if !ok {
 		if err != nil {
 			t.Errorf("problem with adding FW rule: %v", err)
@@ -73,7 +76,7 @@ func TestFirewallRuleAddApplication(t *testing.T) {
 	rule.LocalAddresses = "*"
 	rule.InterfaceTypes = "All"
 	rule.Protocol = NET_FW_IP_PROTOCOL_ANY
-	ok, err := FirewallRuleAddApplication(rule.Name, rule.Description, rule.Grouping, rule.ApplicationName, rule.Profiles)
+	ok, err := FirewallRuleAddApplication(rule.Name, rule.Description, rule.Grouping, rule.ApplicationName, "", 2, 2, rule.Profiles)
 	if !ok {
 		if err != nil {
 			t.Errorf("problem with adding FW application rule: %v", err)

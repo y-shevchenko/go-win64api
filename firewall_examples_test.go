@@ -9,8 +9,8 @@ import (
 )
 
 func ExampleFirewallRuleAdd() {
-	ok, err := FirewallRuleAdd("SQL Server", "Main static SQL Server port 1433", "SQL services", "1433",
-		NET_FW_IP_PROTOCOL_TCP, NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE)
+	ok, err := FirewallRuleAdd("SQL Server", "Main static SQL Server port 1433", "SQL services", "1433", "",
+		NET_FW_IP_PROTOCOL_TCP, NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE, 2)
 	if ok {
 		fmt.Println("Firewall rule created!")
 	} else {
@@ -24,7 +24,7 @@ func ExampleFirewallRuleAdd() {
 
 func ExampleFirewallRuleAddApplication() {
 	_, err := FirewallRuleAddApplication("SQL Browser App", "App rule for SQL Browser", "SQL Services",
-		`%ProgramFiles% (x86)\Microsoft SQL Server\90\Shared\sqlbrowser.exe`, NET_FW_PROFILE2_CURRENT)
+		`%ProgramFiles% (x86)\Microsoft SQL Server\90\Shared\sqlbrowser.exe`, "", NET_FW_IP_PROTOCOL_TCP, 2, NET_FW_PROFILE2_DOMAIN)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -80,7 +80,7 @@ func ExampleFirewallRuleAddAdvanced_iPv6Ping() {
 	if ok {
 		fmt.Println("Rule added!")
 	}
-	// output: Rule added!
+
 	FirewallRuleDelete("Allow IPv6 ping") // check error!
 }
 

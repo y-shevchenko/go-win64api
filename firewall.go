@@ -1,4 +1,5 @@
-// +build windows,amd64
+//go:build windows
+// +build windows
 
 package winapi
 
@@ -91,22 +92,25 @@ func (r *FWRule) InProfiles() FWProfiles {
 //
 // Port(-s) is mandatory.
 // Ports string can look like:
-//   "5800, 5900, 6810-6812"
+//
+//	"5800, 5900, 6810-6812"
 //
 // Protocol will usually be:
-//   NET_FW_IP_PROTOCOL_TCP
-//   // or
-//   NET_FW_IP_PROTOCOL_UDP
+//
+//	NET_FW_IP_PROTOCOL_TCP
+//	// or
+//	NET_FW_IP_PROTOCOL_UDP
 //
 // Profile will decide in which profiles rule will apply. You can use:
-//   NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile(-s)
-//   NET_FW_PROFILE2_ALL // adds rule to all profiles
-//   NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
+//
+//	NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile(-s)
+//	NET_FW_PROFILE2_ALL // adds rule to all profiles
+//	NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
 func FirewallRuleAdd(name, description, group, ports, remotePorts string, protocol, direction, profile int32) (bool, error) {
 
-//	if ports == "" {
-//		return false, fmt.Errorf("empty FW Rule ports, it is mandatory")
-//	}
+	//	if ports == "" {
+	//		return false, fmt.Errorf("empty FW Rule ports, it is mandatory")
+	//	}
 	return firewallRuleAdd(name, description, group, "", "", ports, remotePorts, "", "", "", protocol, direction, profile, true, false)
 }
 
@@ -118,16 +122,20 @@ func FirewallRuleAdd(name, description, group, ports, remotePorts string, protoc
 //
 // AppPath is mandatory.
 // AppPath string should look like:
-//   `%ProgramFiles% (x86)\RemoteControl\winvnc.exe`
+//
+//	`%ProgramFiles% (x86)\RemoteControl\winvnc.exe`
+//
 // Protocol will usually be:
-//   NET_FW_IP_PROTOCOL_TCP
-//   // or
-//   NET_FW_IP_PROTOCOL_UDP
+//
+//	NET_FW_IP_PROTOCOL_TCP
+//	// or
+//	NET_FW_IP_PROTOCOL_UDP
 //
 // Profile will decide in which profiles rule will apply. You can use:
-//   NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile
-//   NET_FW_PROFILE2_ALL // adds rule to all profiles
-//   NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
+//
+//	NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile
+//	NET_FW_PROFILE2_ALL // adds rule to all profiles
+//	NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
 func FirewallRuleAddApplication(name, description, group, appPath, remotePorts string, protocol, direction, profile int32) (bool, error) {
 	if appPath == "" {
 		return false, fmt.Errorf("empty FW Rule appPath, it is mandatory")
@@ -147,14 +155,18 @@ func FirewallRuleCreate(name, description, group, appPath, port string, protocol
 // Description and Group are optional. Description also can not contain the "|" character.
 //
 // RemoteAddresses allows you to limit pinging to f.e.:
-//   "10.10.10.0/24"
+//
+//	"10.10.10.0/24"
+//
 // This will be internally converted to:
-//   "10.10.10.0/255.255.255.0"
+//
+//	"10.10.10.0/255.255.255.0"
 //
 // Profile will decide in which profiles rule will apply. You can use:
-//   NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile
-//   NET_FW_PROFILE2_ALL // adds rule to all profiles
-//   NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
+//
+//	NET_FW_PROFILE2_CURRENT // adds rule to currently used FW Profile
+//	NET_FW_PROFILE2_ALL // adds rule to all profiles
+//	NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE // rule in Private and Domain profile
 func FirewallPingEnable(name, description, group, remoteAddresses string, profile int32) (bool, error) {
 	return firewallRuleAdd(name, description, group, "", "", "", "", "", remoteAddresses, "8:*", NET_FW_IP_PROTOCOL_ICMPv4, 0, profile, true, false)
 }
@@ -174,15 +186,16 @@ func FirewallRuleAddAdvanced(rule FWRule) (bool, error) {
 // If multiple rules with the same name exists, first (random?) is
 // deleted. You can run this function in loop if You want to remove
 // all of them:
-//   var err error
-//   for {
-//       if ok, err := wapi.FirewallRuleDelete("anydesk.exe"); !ok || err != nil {
-//           break
-//       }
-//    }
-//    if err != nil {
-//        fmt.Println(err)
-//    }
+//
+//	var err error
+//	for {
+//	    if ok, err := wapi.FirewallRuleDelete("anydesk.exe"); !ok || err != nil {
+//	        break
+//	    }
+//	 }
+//	 if err != nil {
+//	     fmt.Println(err)
+//	 }
 func FirewallRuleDelete(name string) (bool, error) {
 	if name == "" {
 		return false, fmt.Errorf("empty FW Rule name, name is mandatory")
@@ -220,13 +233,14 @@ func FirewallRuleDelete(name string) (bool, error) {
 // Error is returned if there is problem calling API.
 //
 // If rule is not found, no error is returned, so check:
-//  if len(returnedRule) == 0 {
-//      if err != nil {
-//          fmt.Println(err)
-//      } else {
-//          fmt.Println("rule not found")
-//      }
-//  }
+//
+//	if len(returnedRule) == 0 {
+//	    if err != nil {
+//	        fmt.Println(err)
+//	    } else {
+//	        fmt.Println("rule not found")
+//	    }
+//	}
 func FirewallRuleGet(name string) (FWRule, error) {
 	var rule FWRule
 
@@ -409,7 +423,9 @@ func firewallRuleParams(itemRaw ole.VARIANT) (FWRule, error) {
 //
 // You can enable group in selected FW profiles or in current,
 // use something like:
-//   NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE
+//
+//	NET_FW_PROFILE2_DOMAIN|NET_FW_PROFILE2_PRIVATE
+//
 // to enable group in given profiles.
 func FirewallGroupEnable(name string, profile int32) error {
 	return firewallGroup(name, profile, true)
@@ -728,7 +744,8 @@ func FirewallRuleExistsByName(rules *ole.IDispatch, name string) (bool, error) {
 
 // firewallRulesEnum takes fwPolicy object and returns all objects which needs freeing and enum itself,
 // which is used to enumerate rules. do not forget to:
-//   defer firewallRulesEnumRealease(ur, ep)
+//
+//	defer firewallRulesEnumRealease(ur, ep)
 func firewallRulesEnum(fwPolicy *ole.IDispatch) (*ole.VARIANT, *ole.VARIANT, *ole.IEnumVARIANT, error) {
 	unknownRules, err := oleutil.GetProperty(fwPolicy, "Rules")
 	if err != nil {
